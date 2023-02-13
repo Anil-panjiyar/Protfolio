@@ -11,17 +11,17 @@
   </head>
   <body>
     <div class="container">
-        <h1 class="text-center"> Company Name</h1>
-        <form method="POST" action="/store">
+        <h1 class="text-center"> staff Details</h1>
+        <form  action="" method="POST">
           @csrf
         <div class="mb-3">
-            <label > <b> Com name</b></label>
+            <label > <b> Staff Name</b></label>
             <input type="text" name="name" class="form-control">
 
         </div>
 
         <div class="mb-3">
-            <label > <b> Contact person number</b></label>
+            <label > <b> Staff address</b></label>
             <input type="text" name="address" class="form-control">
 
 
@@ -33,7 +33,11 @@
 
         </div>
 
+        <div class="mb-3">
+            <label > <b> Slug</b></label>
+            <input type="text" name="slug" class="form-control">
 
+        </div>
 
     <div>
       <input type="submit" name="insert" value="Submit" class="btn btn-primary">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Staff;
 use Illuminate\Http\Request;
+use DB;
 
 class StaffController extends Controller
 {
@@ -61,10 +62,39 @@ class StaffController extends Controller
      */
     public function show()
     {
-        $staff=Staff::all();
-        // dd($staff);
-        return view('show',['staffs'=>$staff]);
+        $staffs = DB::table('staff as s')
+                ->selectRaw('s.id, s.name, s.address, s.number, si.image')
+                ->leftJoin('staffimages as si', 'si.staffid', '=', 's.id')
+                ->get();
+
+        // $idArray = [];
+        // $masterArray = [];
+        // $imageArray = [];
+        // foreach($staff as $key => $val) {
+        //     $imageArray[$val->id][] = $val->image;
+
+        // }
+
+        // foreach($staff as $dkey => $dval) {
+        //     if (!in_array($dval->id, $idArray)) {
+        //         //$im=(json_decode($imageArray[$masterArray]));
+        //         $masterArray[$dkey]['id'] = $dval->id;
+        //         $masterArray[$dkey]['name'] = $dval->name;
+        //         $masterArray[$dkey]['address'] = $dval->address;
+        //         $masterArray[$dkey]['number'] = $dval->number;
+        //         $masterArray[$dkey]['image'] = $imageArray[$dval->id];
+        //         $myJSON = json_encode($masterArray);
+        //         array_push($idArray, $dval->id);
+
+        //     }
+        // }
+        // dd($masterArray[0]['image']);
+        //var_dump(json_decode($imageArray[$dval->id]));
+        // dd($staffs);
+        return view('show',compact('staffs'));
+
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -75,6 +105,7 @@ class StaffController extends Controller
     public function edit($id)
     {
         $staff= Staff::find($id);
+
         return view('edit',['staffs'=>$staff]);
     }
 
@@ -91,10 +122,12 @@ class StaffController extends Controller
         // dd($post);
         $post = $request->all();
         $staff= Staff::find($post['staffid']);
-        $staff->name =$request['name'];
+        $staff->name =$post['name'];
         $staff->address = $post['address'];
         $staff->number = $post['number'];
         $staff->save();
+
+
         return redirect('show');
     }
 
